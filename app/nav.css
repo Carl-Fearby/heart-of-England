@@ -3,3 +3,4 @@
 @media(max-width:500px){.brand-row>a img{width:145px}}
 .button,.enquire,.mobile-enquiry{border-radius:4px}
 .brand-row>.primary-navigation{flex:1;min-width:0;justify-content:center;gap:0;border-top:0}.brand-row>.primary-navigation>a,.brand-row>.primary-navigation .nav-group>summary{padding:16px 12px;font-size:.85rem;white-space:nowrap}.brand-row>.primary-navigation .nav-group>summary{gap:8px}@media(max-width:1100px){.brand-row>.primary-navigation,.header-tools{display:none}.nav-mobile{display:block}.brand-row{min-height:72px}}
+@media(max-width:1100px){.nav-mobile>nav{display:none}.nav-mobile[open]>nav{display:block}.nav-mobile>summary::marker{content:""}}
