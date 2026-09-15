@@ -1,0 +1,7 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { cleanTitle, livePosts, textBlocks } from "../../content";
+export function generateStaticParams(){return livePosts.map(post=>({slug:post.slug}))}
+export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{const {slug}=await params;const post=livePosts.find(x=>x.slug===slug);const title=post?cleanTitle(post.title.rendered):"Not found",description=post?textBlocks(post.excerpt.rendered)[0]||"News from Heart of England.":"";return post?{title,description,alternates:{canonical:`/blog/${slug}`},openGraph:{type:"article",title,description,url:`/blog/${slug}`,images:[{url:"/images/conference.jpg",width:1200,height:630,alt:"Heart of England"}]},twitter:{card:"summary_large_image",title,description,images:["/images/conference.jpg"]}}:{title}}
+export default async function Post({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const post=livePosts.find(x=>x.slug===slug);if(!post)notFound();return <article><section className="page-hero"><div className="shell"><p className="eyebrow">Heart of England blog</p><h1>{cleanTitle(post.title.rendered)}</h1></div></section><div className="shell section article-copy long-copy">{textBlocks(post.content.rendered).map((block,index)=><p key={index}>{block}</p>)}<Link className="button" href="/contact-us">Plan an event →</Link></div></article>}
