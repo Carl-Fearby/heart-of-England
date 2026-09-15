@@ -1,0 +1,197 @@
+[
+  {
+    "slug": "birchley-suite",
+    "name": "Birchley Suite",
+    "image": "/images/rooms/birchley-suite.jpg",
+    "uses": [
+      "Conference",
+      "Dining",
+      "Exhibition"
+    ],
+    "access": "Ground floor",
+    "features": [
+      "Air conditioning",
+      "Installed AV and lighting",
+      "Divides into three areas"
+    ],
+    "layouts": {
+      "Theatre": 650,
+      "Cabaret": 350,
+      "Dinner": 500,
+      "Boardroom": 40,
+      "U-shape": 80,
+      "Classroom": 200
+    },
+    "spec": "/migrated/heartofengland.uk/wp-content/uploads/2022/08/Birchley-Room-Spec.pdf"
+  },
+  {
+    "slug": "chestnut-suite",
+    "name": "Chestnut Suite",
+    "image": "/images/rooms/chestnut-suite.jpg",
+    "uses": [
+      "Conference",
+      "Dining"
+    ],
+    "access": "First floor; lift listed",
+    "features": [
+      "Air conditioning",
+      "Screen and HD projector",
+      "Adjacent breakout room"
+    ],
+    "layouts": {
+      "Theatre": 80,
+      "Cabaret": 72,
+      "Dinner": 120,
+      "Boardroom": 20,
+      "U-shape": 30,
+      "Classroom": 48
+    },
+    "spec": "/migrated/heartofengland.uk/wp-content/uploads/2022/08/Chestnut-Room-Spec.pdf"
+  },
+  {
+    "slug": "pine-suite",
+    "name": "Pine Suite",
+    "image": "/images/rooms/pine-suite.jpg",
+    "uses": [
+      "Meeting",
+      "Conference",
+      "Dining"
+    ],
+    "access": "Ground floor",
+    "features": [
+      "Air conditioning",
+      "Screen and HD projector",
+      "Connects to Willow Suite"
+    ],
+    "layouts": {
+      "Theatre": 60,
+      "Cabaret": 32,
+      "Dinner": 48,
+      "Boardroom": 30,
+      "U-shape": 30,
+      "Classroom": 24
+    },
+    "spec": "/migrated/heartofengland.uk/wp-content/uploads/2022/08/Pine-Suite-Room-Spec.pdf"
+  },
+  {
+    "slug": "willow-suite",
+    "name": "Willow Suite",
+    "image": "/images/rooms/willow-suite.jpg",
+    "uses": [
+      "Meeting",
+      "Conference"
+    ],
+    "access": "Ground floor",
+    "features": [
+      "Air conditioning",
+      "Screen and HD projector",
+      "Connects to Pine Suite"
+    ],
+    "layouts": {
+      "Theatre": 28,
+      "Cabaret": null,
+      "Dinner": null,
+      "Boardroom": 16,
+      "U-shape": null,
+      "Classroom": null
+    },
+    "spec": "/migrated/heartofengland.uk/wp-content/uploads/2022/08/Willow-Suite-Room-Spec.pdf"
+  },
+  {
+    "slug": "cedar-suite",
+    "name": "Cedar Suite",
+    "image": "/images/rooms/cedar-suite.jpg",
+    "uses": [
+      "Meeting",
+      "Dining"
+    ],
+    "access": "Ground floor",
+    "features": [
+      "HD screen with HDMI",
+      "Wireless internet",
+      "Adjacent to restaurant"
+    ],
+    "layouts": {
+      "Theatre": 40,
+      "Cabaret": 25,
+      "Dinner": 25,
+      "Boardroom": 20,
+      "U-shape": 20,
+      "Classroom": 20
+    },
+    "spec": "/migrated/heartofengland.uk/wp-content/uploads/2022/08/Cedar-Suite-Room-Spec-1.pdf"
+  },
+  {
+    "slug": "the-marquee",
+    "name": "The Marquee",
+    "image": "/images/rooms/marquee.jpg",
+    "uses": [
+      "Conference",
+      "Dining",
+      "Exhibition"
+    ],
+    "access": "Ground floor",
+    "features": [
+      "Covered access to conference centre",
+      "Lake views",
+      "AV / PA available"
+    ],
+    "layouts": {
+      "Theatre": 500,
+      "Cabaret": 380,
+      "Dinner": 500,
+      "Boardroom": null,
+      "U-shape": null,
+      "Classroom": null
+    },
+    "spec": "/migrated/heartofengland.uk/wp-content/uploads/2022/08/The-Marquee-Room-Spec.pdf"
+  },
+  {
+    "slug": "the-big-dome-2",
+    "name": "The Big Dome",
+    "image": "/images/rooms/big-dome.jpg",
+    "uses": [
+      "Conference",
+      "Product launch"
+    ],
+    "access": "Confirm access with the team",
+    "features": [
+      "Inflatable event space",
+      "Product launch setting",
+      "Suitable for corporate fun days"
+    ],
+    "layouts": {
+      "Theatre": 484,
+      "Cabaret": 400,
+      "Dinner": 432,
+      "Boardroom": null,
+      "U-shape": null,
+      "Classroom": null
+    },
+    "spec": "/migrated/heartofengland.uk/wp-content/uploads/2022/08/The-Big-Dome-Room-Spec.pdf"
+  },
+  {
+    "slug": "the-dome",
+    "name": "The Dome",
+    "image": "/images/rooms/dome.jpg",
+    "uses": [
+      "Meeting",
+      "Product launch"
+    ],
+    "access": "Ground floor",
+    "features": [
+      "Flexible furniture options",
+      "Wireless internet",
+      "Screens available for hire"
+    ],
+    "layouts": {
+      "Theatre": 60,
+      "Cabaret": 30,
+      "Dinner": 60,
+      "Boardroom": 30,
+      "U-shape": 30,
+      "Classroom": null
+    },
+    "spec": "/migrated/heartofengland.uk/wp-content/uploads/2022/08/The-Dome-Room-Spec.pdf"
+  }
+]

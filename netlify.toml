@@ -4,3 +4,27 @@
 
 [build.environment]
   NODE_VERSION = "22"
+
+[[redirects]]
+  from = "/contact"
+  to = "/contact-us/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/spaces"
+  to = "/rooms-and-spaces/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/about"
+  to = "/about-us/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/home"
+  to = "/"
+  status = 301
+  force = true

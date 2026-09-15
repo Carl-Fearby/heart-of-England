@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import ts from 'typescript';
+const { outputText } = ts.transpileModule(fs.readFileSync('app/events.ts', 'utf8'), { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2020 } });
+const { upcomingEvents } = await import(`data:text/javascript;base64,${Buffer.from(outputText).toString('base64')}`);
+assert.equal(upcomingEvents('2026-09-15').length, 4);
+assert.equal(upcomingEvents('2026-10-01')[0].id, 'retro-and-classic-car-show');
+assert(!upcomingEvents('2026-10-02').some(event => event.id === 'retro-and-classic-car-show'));
+assert(!upcomingEvents('2026-10-31').some(event => event.id === 'kids-halloween'));
+assert.equal(upcomingEvents('2027-01-01').length, 0);
+console.log('Passed: events remain visible on their final date, expire the next day and produce an empty list after the season.');

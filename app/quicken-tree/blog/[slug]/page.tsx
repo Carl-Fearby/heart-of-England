@@ -1,9 +1,19 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { cleanTitle, contentMedia, quickenTreePosts, textBlocks } from "../../../content";
 import ResilientImage from "../../../../components/resilient-image";
 
 export function generateStaticParams() { return quickenTreePosts.map(post => ({ slug: post.slug })); }
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = quickenTreePosts.find(item => item.slug === slug);
+  if (!post) return { title: "Not found" };
+  const title = `${cleanTitle(post.title.rendered)} | The Quicken Tree`;
+  const description = textBlocks(post.excerpt.rendered)[0] || "News and events from The Quicken Tree restaurant in Coventry.";
+  return { title, description, alternates: { canonical: `/quicken-tree/blog/${slug}/` }, openGraph: { type: "article", title, description, url: `/quicken-tree/blog/${slug}/`, images: ["/images/quicken-tree-hero.jpg"] } };
+}
 
 export default async function QuickenPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

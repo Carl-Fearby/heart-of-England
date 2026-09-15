@@ -1,3 +1,5 @@
+import EventList from "../../../components/event-list";
+import { venueEvents } from "../../events";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -20,11 +22,11 @@ export async function generateMetadata({ params }: { params: Promise<{ page: str
   const item = quickenTreePages.find(x => x.slug === page);
   const title = item ? `${cleanTitle(item.title.rendered)} | The Quicken Tree` : "Not found";
   const description = item ? textBlocks(item.excerpt.rendered)[0] || "The Quicken Tree restaurant at Heart of England." : "";
-  return item ? { title, description, alternates: { canonical: `/quicken-tree/${page}` }, openGraph: { title, description, url: `/quicken-tree/${page}`, images: [{ url: "/images/quicken-tree-hero.jpg", width: 1200, height: 630, alt: "The Quicken Tree" }] }, twitter: { card: "summary_large_image", title, description, images: ["/images/quicken-tree-hero.jpg"] } } : { title };
+  return item ? { title, description, alternates: { canonical: `/quicken-tree/${page}/` }, openGraph: { title, description, url: `/quicken-tree/${page}`, images: [{ url: "/images/quicken-tree-hero.jpg", width: 1200, height: 630, alt: "The Quicken Tree" }] }, twitter: { card: "summary_large_image", title, description, images: ["/images/quicken-tree-hero.jpg"] } } : { title };
 }
 
 function QuickenHero({ title, lede }: { title: string; lede: string }) {
-  return <section className="interior-hero"><div className="shell interior-grid"><div><p className="eyebrow green">The Quicken Tree · Coventry</p><h1>{title}</h1><p className="lede">{lede}</p></div><ResilientImage src="/images/quicken-tree-hero.jpg" alt="The Quicken Tree restaurant" /></div></section>;
+  return <section className="interior-hero"><div className="shell interior-grid"><div><p className="eyebrow green">The Quicken Tree · Coventry</p><h1>{title}</h1><p className="lede">{lede}</p></div><ResilientImage priority src="/images/quicken-tree-hero.jpg" alt="The Quicken Tree restaurant" /></div></section>;
 }
 
 function MenusPage() {
@@ -39,10 +41,12 @@ export default async function QuickenTreePage({ params }: { params: Promise<{ pa
   const { page } = await params;
   const item = quickenTreePages.find(x => x.slug === page);
   if (!item) notFound();
+  if (page === "whats-on") return <><QuickenHero title="What’s on" lede="Family days and seasonal events at The Quicken Tree and Heart of England." /><section className="shell section"><EventList buildDate={new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/London", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date())} /></section></>;
   if (page === "menus") return <MenusPage />;
-  if (page === "home") return <><section className="qt-hero"><img src="/images/quicken-tree-hero.jpg" alt="The Quicken Tree restaurant at Heart of England" /><div className="shell"><p className="eyebrow">The Quicken Tree · Coventry</p><h1>Good food.<br />Great company.</h1><p>Bar, grill and restaurant with lake views at the Heart of England.</p><div><Link className="button" href="/quicken-tree/menus">View menus</Link><Link className="qt-link" href="/quicken-tree/contact-us">Book a table →</Link></div></div></section><section className="shell qt-intro"><p className="eyebrow green">Eat, drink, relax</p><h2>A welcoming table, whatever the occasion.</h2><p>From breakfast and lunch to dinner, Sunday roasts and afternoon tea, The Quicken Tree is a smart, relaxed place to spend time together.</p><div className="qt-cards"><Link href="/quicken-tree/menus">Menus</Link><Link href="/quicken-tree/whats-on">What’s on</Link><Link href="/quicken-tree/private-dining-and-parties">Private dining</Link></div></section></>;
+  if (page === "home") return <><section className="qt-hero"><ResilientImage priority sizes="100vw" src="/images/quicken-tree-hero.jpg" alt="The Quicken Tree restaurant at Heart of England" /><div className="shell"><p className="eyebrow">The Quicken Tree · Coventry</p><h1>Good food.<br />Great company.</h1><p>Bar, grill and restaurant with lake views at the Heart of England.</p><div><Link className="button" href="/quicken-tree/menus">View menus</Link><Link className="qt-link" href="https://dishcult.com/restaurant/thequickentree?sortOrder=0&page=1">Book a table →</Link></div></div></section><section className="shell qt-intro"><p className="eyebrow green">Eat, drink, relax</p><h2>A welcoming table, whatever the occasion.</h2><p>From breakfast and lunch to dinner, Sunday roasts and afternoon tea, The Quicken Tree is a smart, relaxed place to spend time together.</p><div className="qt-cards"><Link href="/quicken-tree/menus">Menus</Link><Link href="/quicken-tree/whats-on">What’s on</Link><Link href="/quicken-tree/private-dining-and-parties">Private dining</Link></div></section></>;
+  const event = venueEvents.find(event => event.id === page);
   const blocks = textBlocks(item.content.rendered);
   const media = contentMedia(item.content.rendered);
   const documents = contentDocuments(item.content.rendered);
-  return <article><QuickenHero title={cleanTitle(item.title.rendered)} lede="Bar, grill and restaurant at the Heart of England." /><div className="shell article-layout"><article className="article-copy">{blocks.map((block, index) => <p key={index}>{block}</p>)}{documents.length > 0 && <section className="source-downloads"><h2>Downloads</h2><ul>{documents.map(document => <li key={document.href}><a href={document.href} download>{document.label} <span aria-hidden="true">↓</span></a></li>)}</ul></section>}{media.length > 0 && <section className="source-gallery" aria-label={`${cleanTitle(item.title.rendered)} gallery`}>{media.map((image, index) => <ResilientImage key={`${image.src}-${index}`} src={image.src} alt={image.alt} />)}</section>}</article></div></article>;
+  return <article><QuickenHero title={cleanTitle(item.title.rendered)} lede="Bar, grill and restaurant at the Heart of England." /><div className="shell article-layout"><article className="article-copy">{event?.bookingUrl && <section className="event-booking"><h2>{event.dateLabel}</h2><p>{event.price}</p><a className="button" href={event.bookingUrl}>{event.bookingLabel} →</a></section>}{blocks.map((block, index) => <p key={index}>{block}</p>)}{documents.length > 0 && <section className="source-downloads"><h2>Downloads</h2><ul>{documents.map(document => <li key={document.href}><a href={document.href} download>{document.label} <span aria-hidden="true">↓</span></a></li>)}</ul></section>}{media.length > 0 && <section className="source-gallery" aria-label={`${cleanTitle(item.title.rendered)} gallery`}>{media.map((image, index) => <ResilientImage key={`${image.src}-${index}`} src={image.src} alt={image.alt} />)}</section>}</article></div></article>;
 }
