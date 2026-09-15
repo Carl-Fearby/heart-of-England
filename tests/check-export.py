@@ -45,7 +45,10 @@ for label in ['Plan an event', 'Rooms & spaces', 'What’s on', 'Eat & stay', 'A
     assert label in room_html, f'Missing primary navigation label: {label}'
 for control in ['room-guests', 'room-use', 'room-layout']:
     assert rooms.find('input',id=control) or rooms.find('select',id=control), f'Missing room finder control: {control}'
-assert not page('index.html').find('iframe'), 'Homepage video must not load before interaction'
+hero_video = page('index.html').find('iframe', **{'class': 'hero-video'})
+assert len(hero_video) == 1, 'Homepage must include the venue video'
+assert 'autoplay=1' in hero_video[0]['src'] and 'mute=1' in hero_video[0]['src'], 'Homepage video must autoplay silently'
+assert not page('index.html').find('button', **{'class': 'video-toggle'}), 'Homepage must not show a video control'
 assert 'noindex' in page('enquiry-received/index.html').find('meta',name='robots')[0]['content']
 locations=[node.text for node in ET.parse(root/'sitemap.xml').findall('.//{*}loc')]
 assert len(locations)==len(set(locations)), 'Duplicate sitemap URLs'
@@ -53,4 +56,4 @@ for url in locations:
     path=urlsplit(url).path
     assert path not in ['/contact/','/home/','/about/','/spaces/','/enquiry-received/']
     assert target(path).exists(),f'Missing sitemap destination: {url}'
-print(f'Passed: {len(public)} HTML routes, canonical destinations, page assets, Netlify form fields, no autoplay iframe, and {len(locations)} unique sitemap entries.')
+print(f'Passed: {len(public)} HTML routes, canonical destinations, page assets, Netlify form fields, autoplay venue video, and {len(locations)} unique sitemap entries.')
