@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import PageHero from "../../../../components/page-hero";
 import { cleanTitle, contentMedia, quickenTreePosts, textBlocks } from "../../../content";
 import ResilientImage from "../../../../components/resilient-image";
 
@@ -20,5 +21,6 @@ export default async function QuickenPost({ params }: { params: Promise<{ slug: 
   const post = quickenTreePosts.find(item => item.slug === slug);
   if (!post) notFound();
   const media = contentMedia(post.content.rendered);
-  return <><section className="page-hero"><div className="shell"><p className="eyebrow">The Quicken Tree</p><h1>{cleanTitle(post.title.rendered)}</h1></div></section><article className="shell section article-copy long-copy">{media[0] && <ResilientImage src={media[0].src} alt={media[0].alt} />}{textBlocks(post.content.rendered).map((block, index) => <p key={index}>{block}</p>)}<Link className="text-cta" href="/quicken-tree/blog">More from The Quicken Tree →</Link></article></>;
+  const heroImage = media[0]?.src || "/images/quicken-tree-hero.jpg";
+  return <><PageHero image={heroImage}><p className="eyebrow">The Quicken Tree</p><h1>{cleanTitle(post.title.rendered)}</h1></PageHero><article className="shell section article-copy long-copy">{media[0] && <ResilientImage src={media[0].src} alt={media[0].alt} />}{textBlocks(post.content.rendered).map((block, index) => <p key={index}>{block}</p>)}<Link className="text-cta" href="/quicken-tree/blog">More from The Quicken Tree →</Link></article></>;
 }

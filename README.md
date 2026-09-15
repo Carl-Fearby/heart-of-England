@@ -57,14 +57,14 @@ avoid unnecessary Netlify builds.
 ## Events and images
 
 Maintain event dates, prices and booking links in `app/events.ts`. Source details
-were reviewed on 15 September 2026. The event listing removes expired events in
-the browser using the Europe/London date and at build time; rebuild after content
-changes so the exported HTML stays current for visitors without JavaScript.
+were reviewed on 15 September 2026. The event listing removes expired events at build time using the Europe/London
+date; rebuild after content changes so the exported HTML stays current.
 
-Run `npm run images:optimise` after adding source images. Commit both
-`public/optimised/` and `app/data/optimised-images.json` with the source changes.
-This generates responsive WebP variants locally; deployments serve them directly
-without an image optimisation service. The homepage video loads only when played.
+Run `npm run images:refresh` after content changes to download any newly referenced
+WordPress uploads and generate responsive WebP variants. Commit `public/migrated/`,
+`public/optimised/`, `app/data/source-asset-map.json` and
+`app/data/optimised-images.json` together. Deployments serve optimised images
+directly without an image optimisation service. The homepage video loads only when played.
 
 Search metadata continues to use `https://heartofengland.uk` as the intended
 production domain. The Netlify URL is the review address until domain cutover.

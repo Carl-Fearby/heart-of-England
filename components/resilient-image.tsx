@@ -9,5 +9,6 @@ export default function ResilientImage({ src, alt, className, priority = false, 
   const [failed, setFailed] = useState(false);
   const current = failed ? "/images/showground.jpg" : src;
   const data = (manifest as Record<string, ImageData>)[current];
-  return <img className={className} src={data?.variants.at(-1)?.src || current} srcSet={data?.variants.map(v => `${v.src} ${v.width}w`).join(", ")} sizes={data ? sizes : undefined} width={data?.width} height={data?.height} alt={failed ? "Heart of England venue" : alt} loading={priority ? "eager" : "lazy"} fetchPriority={priority ? "high" : "auto"} decoding="async" onError={() => { if (!failed) setFailed(true); }} />;
+  const defaultSrc = data?.variants[0]?.src || current;
+  return <img className={className} src={defaultSrc} srcSet={data?.variants.map(v => `${v.src} ${v.width}w`).join(", ")} sizes={data ? sizes : undefined} width={data?.width} height={data?.height} alt={failed ? "Heart of England venue" : alt} loading={priority ? "eager" : "lazy"} fetchPriority={priority ? "high" : "auto"} decoding="async" onError={() => { if (!failed) setFailed(true); }} />;
 }

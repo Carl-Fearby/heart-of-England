@@ -6,15 +6,22 @@ const sources = [
   "app/data/heart-of-england-posts.json",
   "app/data/quicken-tree-pages.json",
   "app/data/quicken-tree-posts.json",
+  "app/data/subsite-pages.json",
+  "app/data/derived-pages.json",
 ];
-const uploads = /https?:\/\/(?:www\.)?(?:heartofengland\.uk|quickentree\.uk)\/wp-content\/uploads\/[^\"'\s<]+/gi;
+const uploads = /(?:https?:)?\/\/(?:www\.)?(?:heartofengland\.uk|quickentree\.uk|weddingsatheart\.uk|teambuildingatheart\.co\.uk|stayatheart\.co\.uk)\/wp-content\/uploads\/[^\"'\s<)]+/gi;
 const urls = new Set();
+function collectUrls(html) {
+  for (const match of html.matchAll(uploads)) {
+    const raw = match[0].replaceAll("\\/", "/").replaceAll("&amp;", "&").replace(/&#(?:0*39|x27);.*/i, "");
+    urls.add(raw.startsWith("//") ? `https:${raw}` : raw.replace(/^http:\/\//i, "https://"));
+  }
+}
 
 for (const source of sources) {
   const records = JSON.parse(await (await import("node:fs/promises")).readFile(source, "utf8"));
   for (const record of records) for (const field of ["content", "excerpt"]) {
-    const html = record[field]?.rendered ?? "";
-    for (const match of html.matchAll(uploads)) urls.add(match[0].replaceAll("\\/", "/").replaceAll("&amp;", "&").replace(/&#(?:0*39|x27);.*/i, ""));
+    collectUrls(record[field]?.rendered ?? "");
   }
 }
 

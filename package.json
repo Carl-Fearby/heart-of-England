@@ -10,9 +10,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
-    "images:optimise": "node scripts/optimise-images.mjs"
+    "images:sync": "node scripts/sync-source-assets.mjs",
+    "images:optimise": "node scripts/optimise-images.mjs",
+    "images:refresh": "npm run images:sync && npm run images:optimise",
+    "content:sync": "node scripts/sync-wp-content.mjs && npm run images:refresh"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.3.1",
+    "@fortawesome/free-solid-svg-icons": "^7.3.1",
+    "@fortawesome/react-fontawesome": "^3.5.0",
     "next": "16.3.4",
     "react": "19.2.6",
     "react-dom": "19.2.6"
@@ -23,8 +29,8 @@
     "@types/react-dom": "19.2.3",
     "eslint": "9.39.4",
     "eslint-config-next": "16.3.4",
-    "typescript": "5.9.3",
-    "sharp": "0.35.4"
+    "sharp": "0.35.4",
+    "typescript": "5.9.3"
   },
   "type": "module"
 }
