@@ -33,7 +33,7 @@ export default function SiteHeader() {
     if (current.open && current.classList.contains("nav-group")) current.parentElement?.querySelectorAll<HTMLDetailsElement>(".nav-group[open]").forEach(other => { if (other !== current) other.open = false; });
   }}>
     <div className="shell brand-row"><Link href="/" aria-label="Heart of England home"><ResilientImage priority sizes="200px" src="/images/heart-of-england-logo.png" alt="Heart of England" /></Link><nav className="primary-navigation" aria-label="Primary navigation"><NavigationLinks /></nav><div className="header-tools"><a href="tel:01676540333">01676 540333</a><Link className="enquire" href="/contact-us/">Make an enquiry ↗</Link></div>
-      <details className="nav-mobile"><summary><span>Menu</span><span className="menu-icon" aria-hidden="true"><i /><i /><i /></span></summary><nav aria-label="Mobile navigation"><NavigationLinks /></nav></details>
+      <details className="nav-mobile"><summary aria-label="Open navigation"><span className="menu-icon" aria-hidden="true"><i /><i /><i /></span></summary><nav aria-label="Mobile navigation"><NavigationLinks /></nav></details>
     </div>
   </header><Link className="mobile-enquiry" href="/contact-us/">Make an enquiry ↗</Link></>;
 }
