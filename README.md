@@ -17,8 +17,11 @@ Open http://localhost:3000.
 
 ```sh
 npm run build
-npm start
 ```
+
+The production build exports the website to `out/`. Netlify uses the committed
+`netlify.toml` to build and publish this directory. Other static hosts should
+serve `out/` as their document root.
 
 ## Checks
 
