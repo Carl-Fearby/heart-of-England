@@ -6,3 +6,4 @@
 @media(max-width:900px){.nav-mobile>summary{display:flex;align-items:center;gap:10px}.menu-icon{width:22px;height:16px;display:grid;align-content:space-between}.menu-icon i{display:block;height:2px;width:100%;background:currentColor;transition:transform .2s ease,opacity .2s ease}.nav-mobile[open] .menu-icon i:first-child{transform:translateY(7px) rotate(45deg)}.nav-mobile[open] .menu-icon i:nth-child(2){opacity:0}.nav-mobile[open] .menu-icon i:last-child{transform:translateY(-7px) rotate(-45deg)}}
 .mobile-enquiry{border:0}
 @media(max-width:900px){.nav-mobile nav>a,.nav-mobile .nav-group>summary{font-size:1.25rem;line-height:1.25}}
+@media(max-width:900px){.nav-mobile nav>a,.nav-mobile .nav-group>summary{padding-left:18px;padding-right:18px}}
