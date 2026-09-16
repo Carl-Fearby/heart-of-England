@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ResilientImage from "./resilient-image";
@@ -16,16 +16,52 @@ function navItemKey(item: NavNode, depth: number) {
   return `${depth}:${item.label}:${item.href ?? "group"}`;
 }
 
+function NavChildrenChevron() {
+  return <FontAwesomeIcon className="nav-chevron-right" icon={faChevronRight} aria-hidden="true" />;
+}
+
 function NavTrigger({ label }: { label: string }) {
-  return <span className="nav-summary-inner"><span className="nav-label">{label}</span><FontAwesomeIcon className="nav-chevron" icon={faChevronDown} aria-hidden="true" /></span>;
+  return <span className="nav-summary-inner"><span className="nav-label">{label}</span><FontAwesomeIcon className="nav-chevron" icon={faChevronRight} aria-hidden="true" /></span>;
+}
+
+function clearFlyoutBranch(item: HTMLElement) {
+  item.classList.remove("is-flyout-open");
+  item.querySelectorAll(".nav-flyout-item.is-flyout-open").forEach(node => node.classList.remove("is-flyout-open"));
+}
+
+function clearSiblingFlyouts(item: HTMLElement) {
+  item.parentElement?.querySelectorAll<HTMLElement>(":scope > .nav-flyout-item.is-flyout-open").forEach(sibling => {
+    if (sibling !== item) clearFlyoutBranch(sibling);
+  });
+}
+
+function openFlyoutItem(item: HTMLElement) {
+  clearSiblingFlyouts(item);
+  item.classList.add("is-flyout-open");
+}
+
+function resetFlyouts(root: HTMLElement | null | undefined) {
+  root?.querySelectorAll(".nav-flyout-item.is-flyout-open").forEach(item => item.classList.remove("is-flyout-open"));
 }
 
 function NavBranch({ items, depth = 0, onNavigate }: { items: NavNode[]; depth?: number; onNavigate?: () => void }) {
   return <ul className={depth ? "nav-subflyout" : "nav-flyout"}>
-    {items.map(item => <li key={navItemKey(item, depth)} className={item.children ? "nav-flyout-item has-children" : "nav-flyout-item"}>
+    {items.map(item => <li
+      key={navItemKey(item, depth)}
+      className={item.children ? "nav-flyout-item has-children" : "nav-flyout-item"}
+      onMouseEnter={event => {
+        clearSiblingFlyouts(event.currentTarget);
+        if (item.children) openFlyoutItem(event.currentTarget);
+      }}
+      onMouseLeave={event => {
+        const related = event.relatedTarget as Node | null;
+        if (related && event.currentTarget.contains(related)) return;
+        if (item.children) clearFlyoutBranch(event.currentTarget);
+      }}
+    >
       {item.href
-        ? <NavAnchor href={item.href} onNavigate={onNavigate}>{item.label}{item.children && <FontAwesomeIcon className="nav-chevron-right" icon={faChevronRight} aria-hidden="true" />}</NavAnchor>
-        : <span className="nav-flyout-label">{item.label}</span>}
+        ? <NavAnchor href={item.href} onNavigate={onNavigate}><span className="nav-flyout-link"><span>{item.label}</span>{item.children && <NavChildrenChevron />}</span></NavAnchor>
+        : <span className="nav-flyout-label"><span>{item.label}</span><NavChildrenChevron /></span>}
       {item.children && <NavBranch items={item.children} depth={depth + 1} onNavigate={onNavigate} />}
     </li>)}
   </ul>;
@@ -34,13 +70,19 @@ function NavBranch({ items, depth = 0, onNavigate }: { items: NavNode[]; depth?:
 function NavBranchMobile({ items, depth = 0, onNavigate }: { items: NavNode[]; depth?: number; onNavigate?: () => void }) {
   return <ul className={`nav-mobile-branch depth-${depth}`}>
     {items.map(item => item.children
-      ? <li key={navItemKey(item, depth)}><details className="nav-mobile-nested"><summary>{item.label}</summary><NavBranchMobile items={item.children} depth={depth + 1} onNavigate={onNavigate} /></details></li>
+      ? <li key={navItemKey(item, depth)}><details className="nav-mobile-nested"><summary><span className="nav-summary-inner"><span className="nav-label">{item.label}</span><NavChildrenChevron /></span></summary><NavBranchMobile items={item.children} depth={depth + 1} onNavigate={onNavigate} /></details></li>
       : <li key={navItemKey(item, depth)}><NavAnchor href={item.href!} onNavigate={onNavigate}>{item.label}</NavAnchor></li>)}
   </ul>;
 }
 
 function DesktopDropdown({ label, children, className = "" }: { label: string; children: React.ReactNode; className?: string }) {
-  return <div className={`nav-group nav-hover ${className}`.trim()} onMouseLeave={event => { (event.currentTarget as HTMLElement).classList.remove("is-dismissed"); }}>
+  return <div className={`nav-group nav-hover ${className}`.trim()} onMouseEnter={event => {
+    (event.currentTarget as HTMLElement).classList.remove("is-dismissed");
+  }} onMouseLeave={event => {
+    const element = event.currentTarget as HTMLElement;
+    element.classList.remove("is-dismissed");
+    resetFlyouts(element);
+  }}>
     <button type="button" className="nav-trigger" aria-haspopup="true"><NavTrigger label={label} /></button>
     <div className="group-links">{children}</div>
   </div>;
@@ -81,6 +123,7 @@ export default function SiteHeader() {
   const header = useRef<HTMLElement>(null);
   const pathname = usePathname();
   const closeMenus = useCallback(() => {
+    resetFlyouts(header.current);
     header.current?.querySelectorAll<HTMLDetailsElement>("details.nav-mobile[open], .nav-mobile details[open]").forEach(details => { details.open = false; });
     header.current?.querySelectorAll<HTMLElement>(".primary-navigation .nav-hover").forEach(group => {
       group.classList.add("is-dismissed");
@@ -115,6 +158,7 @@ export default function SiteHeader() {
         }
         return;
       }
+      if (target.closest(".primary-navigation .nav-flyout a, .primary-navigation .group-links > a")) return;
       if (!target.closest(".primary-navigation .group-links")) closeMenus();
     }
     document.addEventListener("pointerdown", onPointerDown);
