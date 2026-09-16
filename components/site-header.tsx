@@ -88,7 +88,11 @@ function DesktopDropdown({ label, children, className = "" }: { label: string; c
       group?.classList.add("is-dismissed");
       event.currentTarget.blur();
     }}><NavTrigger label={label} /></button>
-    <div className="group-links">{children}</div>
+    <div className="group-links" onClickCapture={event => {
+      if (!(event.target as HTMLElement).closest("a")) return;
+      event.currentTarget.closest<HTMLElement>(".nav-hover")?.classList.add("is-dismissed");
+      (document.activeElement as HTMLElement | null)?.blur();
+    }}>{children}</div>
   </div>;
 }
 
