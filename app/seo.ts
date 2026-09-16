@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-export const siteOrigin = "https://heartofengland.uk";
+export const siteOrigin = "https://heartofengland.netlify.app";
 export const siteName = "Heart of England";
 const defaultImage = "/images/conference.jpg";
 
