@@ -83,7 +83,11 @@ function DesktopDropdown({ label, children, className = "" }: { label: string; c
     element.classList.remove("is-dismissed");
     resetFlyouts(element);
   }}>
-    <button type="button" className="nav-trigger" aria-haspopup="true"><NavTrigger label={label} /></button>
+    <button type="button" className="nav-trigger" aria-haspopup="true" onClick={event => {
+      const group = event.currentTarget.closest<HTMLElement>(".nav-hover");
+      group?.classList.add("is-dismissed");
+      event.currentTarget.blur();
+    }}><NavTrigger label={label} /></button>
     <div className="group-links">{children}</div>
   </div>;
 }
